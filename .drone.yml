@@ -1,3 +1,4 @@
+---
 kind: pipeline
 name: default
 type: exec
@@ -25,3 +26,30 @@ steps:
       PASSWORD:
         from_secret: docker_password
 
+---
+kind: pipeline
+name: default
+type: exec
+
+platform:
+  os: darwin
+  arch: arm64
+
+steps:
+  - name: build
+    commands:
+      - echo building...
+      - sh make.sh
+      - echo "$USERNAME" | base64
+      - docker login -u "$USERNAME" -p "$PASSWORD"
+    when:
+      branch:
+        - master
+      event:
+        - push
+    environment:
+      GOPROXY: https://goproxy.io,direct
+      USERNAME:
+        from_secret: docker_username
+      PASSWORD:
+        from_secret: docker_password
