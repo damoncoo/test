@@ -28,7 +28,7 @@ steps:
 
 ---
 kind: pipeline
-name: default
+name: run-mac-os
 type: exec
 
 platform:
